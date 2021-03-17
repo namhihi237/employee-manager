@@ -5,10 +5,11 @@ import { defaultMiddleware, errorHandle } from "./middlewares";
 
 import { adminRouter } from "./routes/admin";
 import { authRouter, userRouter } from "./routes/api";
-
+import { initialAccount } from "./utils";
 export let server;
 const main = async () => {
     server = new HttpServer(port);
+
     server.registerMiddleware(defaultMiddleware);
     server.listen();
 
@@ -17,5 +18,6 @@ const main = async () => {
     server.registerRouter(userRouter);
 
     server.registerMiddleware(errorHandle);
+    initialAccount();
 };
 main();

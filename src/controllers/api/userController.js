@@ -1,20 +1,9 @@
-import { PrismaClient } from "@prisma/client";
 import { HttpError } from "../../utils";
-const prisma = new PrismaClient();
-
+import { userService } from "../../services";
 const getUsers = async (req, res, next) => {
     const { page } = req.query;
     try {
-        let users = [];
-        if (!page) {
-            users = await prisma.user.findMany();
-        } else if (isNaN(page)) {
-        } else if (page <= 0) {
-        } else {
-            const take = 4;
-            const skip = (page - 1) * take;
-            users = await prisma.user.findMany({ skip, take });
-        }
+        const users = await userService.getUsers(page);
         res.status(200).json({
             msg: "Success",
             data: {
@@ -29,7 +18,8 @@ const getUsers = async (req, res, next) => {
 const getUser = async (req, res, next) => {
     const { userId } = req.params;
     try {
-        const user = await prisma.user.findFirst({ where: { id: userId - 0 } });
+        const id = userId - 0;
+        const user = await userService.getUserById(id);
         res.status(200).json({
             msg: "Success",
             data: {
@@ -46,7 +36,7 @@ const createUser = async (req, res, next) => {
     const { name, age, address } = req.body;
     try {
         if (role != 0) throw new HttpError("Deny permission", 401);
-        await prisma.user.create({ data: { name, age, address, active: true } });
+        await userService.createUser({ name, age, address });
         res.status(200).json({
             msg: "Success",
         });
@@ -62,9 +52,9 @@ const updateUser = async (req, res, next) => {
     try {
         let id = userId - 0;
         if (role != 0) throw new HttpError("Deny permission", 401);
-        const user = await prisma.user.findFirst({ where: { id } });
-        if (!user) throw new HttpError("User does not exist", 404);
-        await prisma.user.update({ where: { id }, data: { name, age, address } });
+        const data = { name, age, address };
+        if (!(await userService.updateUserById(id, data)))
+            throw new HttpError("User does not exist", 404);
         res.status(200).json({
             msg: "Success",
         });
@@ -79,9 +69,7 @@ const deleteUser = async (req, res, next) => {
     try {
         let id = userId - 0;
         if (role != 0) throw new HttpError("Deny permission", 401);
-        const user = await prisma.user.findFirst({ where: { id } });
-        if (!user) throw new HttpError("User does not exist", 404);
-        await prisma.user.delete({ where: { id } });
+        if (!(await userService.deleteUser(id))) throw new HttpError("User does not exist", 404);
         res.status(200).json({
             msg: "Success",
         });
@@ -94,9 +82,7 @@ const toggleActiveUser = async (req, res, next) => {
     const { userId } = req.params;
     try {
         let id = userId - 0;
-        const user = await prisma.user.findUnique({ where: { id } });
-        if (!user) throw new HttpError("User does not exist", 404);
-        await prisma.user.update({ where: { id }, data: { active: !user.active } });
+        if (!(await userService.toggleActive(id))) throw new HttpError("User does not exist", 404);
         res.status(200).json({
             msg: "Success",
         });

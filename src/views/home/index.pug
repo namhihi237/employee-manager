@@ -45,9 +45,9 @@ block content
                         span.sr-only Previous
                 li.page-item
                     a.page-link(href='#')=page
-                    p=`${page}/ ${count}`
+                    p=`${page}/ ${count == 0 ? 1 : count}`
                 li.page-item
-                    a.page-link(href=`/?page=${page == count ? page : page + 1}`, aria-label='Next')
+                    a.page-link(href=`/?page=${page >= count ? page : page + 1}`, aria-label='Next')
                         span(aria-hidden='true') &raquo;
                         span.sr-only Next
     script.

@@ -1,13 +1,10 @@
-import { PrismaClient } from "@prisma/client";
 import { HttpError } from "../../utils";
 import bcrypt from "bcryptjs";
-import { envVariables } from "../../configs";
+import { envVariables, prisma } from "../../configs";
 const { keyAdmin } = envVariables;
-const prisma = new PrismaClient();
 
 const register = async (req, res, next) => {
     const { userName, password, key, role } = req.body;
-
     try {
         if (key != keyAdmin) throw new HttpError("Deny create admin account", 400);
         const admin = await prisma.account.findFirst({ where: { userName } });

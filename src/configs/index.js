@@ -1,4 +1,4 @@
 import { envVariables } from "./envVariable";
 import { HttpServer } from "./server";
-
-export { envVariables, HttpServer };
+import { prisma } from "./database";
+export { envVariables, HttpServer, prisma };

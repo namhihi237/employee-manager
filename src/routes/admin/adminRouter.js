@@ -12,11 +12,13 @@ const {
     toggleActive,
     editView,
     saveEdit,
+    errorPage,
 } = adminController;
 const { createUserSchema, editUserSchema } = validateSchema;
 
 export const adminRouter = Router();
 
+adminRouter.route("/error").get(errorPage);
 adminRouter.route("/login").get(viewLogin);
 adminRouter.route("/login").post(login);
 adminRouter.route("/").get(authMiddleware, home);
