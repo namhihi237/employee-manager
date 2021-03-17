@@ -1,0 +1,26 @@
+extends ../template
+block content
+            form(action=`/edit-user/${user.id}`, method='post')
+                .modal-header
+                    h5#exampleModalLabel.modal-title Edit User
+                .modal-body
+                        .form-group
+                            input.form-control(type='text', name='id' readonly='readonly' value = user.id)
+                        .form-group
+                            input.form-control(type='text', placeholder='Enter Name', name='name' value = user.name)
+                        .form-group
+                            input.form-control(type='text', placeholder='Enter Age', name='age' value = user.age)
+                        .form-group
+                            input.form-control(type='text', placeholder='Enter Address', name='address' value = user.address)
+                        if msg
+                            div(aria-live='polite', aria-atomic='true', style='position: relative; min-height: 60px')
+                                .toast(style='position: absolute; top: 0; right: 0', data-delay='3000')
+                                    .toast-header
+                                        strong.mr-auto notification
+                                        .toast-body=msg
+                .modal-footer
+                    a(href="/")
+                        button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel 
+                    button.btn.btn-primary(type='submit') Update 
+            script.
+                $(".toast").toast("show")

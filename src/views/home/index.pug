@@ -1,0 +1,58 @@
+extends ../template
+block content
+    a(href="/create-user")
+        button.btn.btn-primary(type='button', data-toggle='modal', data-target='#exampleModal') Add 
+    table.table
+        thead
+            tr
+                th(scope='col') ID
+                th(scope='col') Name
+                th(scope='col') Age
+                th(scope='col') Address
+                th(scope='col') status
+                th(scope='col') Option
+        tbody
+            if users 
+                each user in users
+                    tr
+                        td=user.id
+                        td=user.name
+                        td=user.age
+                        td=user.address
+                        td
+                            a(href=`/toggle/${user.id}`) 
+                                if user.active
+                                    button.btn.btn-success.mr-3 active
+                                else
+                                     button.btn.btn-secondary.mr-3 inactive
+                        td  
+                            a(href=`/edit-user/${user.id}`) 
+                                button.btn.btn-primary.mr-3 Edit
+                            a(href=`/delete-user/${user.id}`)
+                                button.btn.btn-danger Delete
+        if msg
+            div(aria-live='polite', aria-atomic='true', style='position: relative; min-height: 60px')
+                .toast(style='position: absolute; top: 0; right: 0', data-delay='3000')
+                    .toast-header
+                        strong.mr-auto notification
+                        .toast-body=msg
+    .pa
+        nav(aria-label='Page navigation example')
+            ul.pagination
+                li.page-item
+                    a.page-link(href=`/?page=${(page - 1) > 0 ? (page - 1) : 1 }`, aria-label='Previous')
+                        span(aria-hidden='true') &laquo;
+                        span.sr-only Previous
+                li.page-item
+                    a.page-link(href='#')=page
+                    p=`${page}/ ${count}`
+                li.page-item
+                    a.page-link(href=`/?page=${page == count ? page : page + 1}`, aria-label='Next')
+                        span(aria-hidden='true') &raquo;
+                        span.sr-only Next
+    script.
+        $(".toast").toast("show")
+    style. 
+        .pa{
+            margin-left: 35vw;
+        }
