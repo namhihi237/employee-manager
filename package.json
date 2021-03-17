@@ -5,7 +5,8 @@
     "author": "popp.dev",
     "license": "MIT",
     "scripts": {
-        "dev": "nodemon -r esm ./src/index.js"
+        "dev": "nodemon -r esm ./src/index.js",
+        "start": "node -r esm ./src/index.js"
     },
     "dependencies": {
         "@prisma/client": "^2.18.0",
