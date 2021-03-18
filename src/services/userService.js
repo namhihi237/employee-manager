@@ -2,12 +2,12 @@ import { prisma } from "../configs";
 
 const getUsers = async (page) => {
     let users = [];
+    const take = 6;
     if (!page) {
-        users = await prisma.user.findMany();
+        users = await prisma.user.findMany({ skip: 0, take });
     } else if (isNaN(page)) {
     } else if (page <= 0) {
     } else {
-        const take = 6;
         const skip = (page - 1) * take;
         users = await prisma.user.findMany({ skip, take });
     }

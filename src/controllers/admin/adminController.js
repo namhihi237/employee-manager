@@ -32,20 +32,26 @@ const logout = async (req, res, next) => {
 
 const home = async (req, res, next) => {
     let { msg, page } = req.query;
+    console.log(req.query);
     try {
         let users = [];
         let count = await userService.getCount();
         page = page - 0;
         count = Math.ceil(count / 6);
-        if (!page) {
-            users = await userService.getUsers(1);
-            return res.render("home/index.pug", { users, count, page: 1 });
-        }
-        users = await userService.getUsers(page);
         if (msg) {
+            if (!page) {
+                users = await userService.getUsers(1);
+                return res.render("home/index.pug", { users, count, page: 1, msg });
+            }
+            users = await userService.getUsers(page);
             return res.render("home/index.pug", { users, msg, count, page });
         }
-        return res.render("home/index.pug", { users, count, page });
+
+        users = await userService.getUsers(page);
+        if (page) {
+            return res.render("home/index.pug", { users, count, page });
+        }
+        return res.render("home/index.pug", { users, count, page: 1 });
     } catch (error) {
         console.log(error);
         res.redirect("/error");
@@ -54,10 +60,7 @@ const home = async (req, res, next) => {
 
 const createUserGet = async (req, res, next) => {
     const { msg } = req.query;
-    if (req.user.role === 0) {
-        return res.render("home/create.pug", { msg });
-    }
-    return res.redirect(`/?msg="Deny permission`);
+    res.render("home/create.pug", { msg });
 };
 
 const createUSerPost = async (req, res, next) => {
@@ -74,9 +77,6 @@ const createUSerPost = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
     const { userId } = req.params;
     try {
-        if (req.user.role != 0) {
-            return res.redirect(`/?msg="Deny permission`);
-        }
         let id = userId - 0;
         if (!(await userService.deleteUser(id))) {
             return res.redirect(`/?msg="User does not exist`);
@@ -105,11 +105,9 @@ const editView = async (req, res, next) => {
     const { userId } = req.params;
     const { msg } = req.query;
     try {
-        if (req.user.role != 0) {
-            return res.redirect(`/?msg="Deny permission`);
-        }
         let id = userId - 0;
-        const user = await userService.getUsers(id);
+        const user = await userService.getUserById(id);
+        console.log(user);
         if (!user) {
             return res.redirect(`/?msg="User does not exist`);
         }
