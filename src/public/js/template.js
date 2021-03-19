@@ -9,7 +9,7 @@ function closeForm() {
     document.getElementById("myForm").style.display = "none";
 }
 $(".open-button").click(() => {
-    document.getElementById("myForm").style.display = "block";
+    openForm();
 });
 
 var firebaseConfig = {
@@ -25,7 +25,7 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 let database = firebase.database();
-
+endScroll();
 function uuidv4() {
     return Date.now();
 }
@@ -47,8 +47,7 @@ database.ref("mess/").on("value", (snapshot) => {
     for (let item in data) {
         msg.value += `${data[item].userName}: ${data[item].content}\n`;
     }
-    var textarea = document.getElementById("msg");
-    textarea.scrollTop = textarea.scrollHeight;
+    endScroll();
 });
 let send = document.getElementById("input-data");
 send.addEventListener("keydown", function (event) {
@@ -58,3 +57,7 @@ send.addEventListener("keydown", function (event) {
         document.getElementById("send-btn").click();
     }
 });
+function endScroll() {
+    let textarea = document.getElementById("msg");
+    textarea.scrollTop = textarea.scrollHeight;
+}
