@@ -3,7 +3,6 @@ import path from "path";
 import express from "express";
 import session from "express-session";
 import redis from "redis";
-// import cookieParser from "cookie-parser";
 
 const redisStore = require("connect-redis")(session);
 const redisClient = redis.createClient();
@@ -24,7 +23,6 @@ export const defaultMiddleware = (app) => {
             extended: true,
         })
     );
-    // app.use(cookieParser());
     app.use(
         session({
             secret: "session123!@#",

@@ -1,4 +1,5 @@
 import express from "express";
+
 export class HttpServer {
     constructor(port) {
         this.port = port;

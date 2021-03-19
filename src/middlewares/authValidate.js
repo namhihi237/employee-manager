@@ -6,6 +6,7 @@ export const authMiddleware = (req, res, next) => {
             return res.redirect("/login");
         }
         req.user = sess.user;
+        res.locals.userName = sess.user.userName;
         next();
     } catch (error) {
         console.log(error);
