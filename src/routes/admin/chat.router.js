@@ -12,4 +12,8 @@ chatRouter
 
 chatRouter
     .route("/chat")
-    .post(authMiddleware, checkRole(USER_ROLE), chatController.createMessage);
+    .post(
+        authMiddleware,
+        checkRole(USER_ROLE, ADMIN_ROLE, HR_ROLE),
+        chatController.createMessage
+    );

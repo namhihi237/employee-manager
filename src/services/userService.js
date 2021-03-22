@@ -1,18 +1,12 @@
 import { prisma } from "../configs";
 import bcrypt from "bcryptjs";
+import { panigation } from "../utils";
+
 const getUsers = async (page) => {
-    let users = [];
     const take = 6;
-    if (!page) {
-        users = await prisma.user.findMany({ skip: 0, take });
-    } else if (isNaN(page)) {
-    } else if (page <= 0) {
-    } else {
-        const skip = (page - 1) * take;
-        users = await prisma.user.findMany({ skip, take });
-    }
-    return users;
+    return panigation(prisma.user, page, take);
 };
+
 const createUser = async (user) => {
     const isUser = await prisma.account.findUnique({
         where: { userName: user.userName },
@@ -35,10 +29,7 @@ const createUser = async (user) => {
     });
     return true;
 };
-const getUserById = async (id) => {
-    const user = await prisma.user.findFirst({ where: { id } });
-    return user;
-};
+const getUserById = async (id) => prisma.user.findFirst({ where: { id } });
 
 const deleteUser = async (id) => {
     const user = await getUserById(id);
@@ -64,10 +55,7 @@ const toggleActive = async (id) => {
     return true;
 };
 
-const getCount = async () => {
-    const count = await prisma.user.count();
-    return count;
-};
+const getCount = async () => await prisma.user.count();
 
 export const userService = {
     getUsers,

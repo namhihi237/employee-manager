@@ -58,7 +58,7 @@ const home = async (req, res, next) => {
         }
 
         users = await userService.getUsers(page);
-        if (page) {
+        if (page && page > 0) {
             return res.render("home/index.pug", { users, count, page });
         }
         return res.render("home/index.pug", { users, count, page: 1 });
