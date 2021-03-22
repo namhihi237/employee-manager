@@ -1,10 +1,21 @@
 import { Router } from "express";
 import { userController } from "../../controllers/api";
-import { authMiddlewareAPI, validateSchemaApi, checkRoleApi } from "../../middlewares";
-import { roleConstant } from "../../constant";
-const { ADMIN_ROLE, HR_ROLE } = roleConstant;
+import {
+    authMiddlewareAPI,
+    validateSchemaApi,
+    checkRoleApi,
+} from "../../middlewares";
+import { ROLE } from "../../constant";
+const { ADMIN_ROLE, HR_ROLE } = ROLE;
 const { userCreateSchema, userUpdateSchema } = validateSchemaApi;
-const { getUsers, createUser, updateUser, deleteUser, getUser, toggleActiveUser } = userController;
+const {
+    getUsers,
+    createUser,
+    updateUser,
+    deleteUser,
+    getUser,
+    toggleActiveUser,
+} = userController;
 export const userRouter = Router();
 
 userRouter
@@ -17,11 +28,21 @@ userRouter
 
 userRouter
     .route("/api/v1/users")
-    .post(authMiddlewareAPI, checkRoleApi(ADMIN_ROLE), userCreateSchema, createUser);
+    .post(
+        authMiddlewareAPI,
+        checkRoleApi(ADMIN_ROLE),
+        userCreateSchema,
+        createUser
+    );
 
 userRouter
     .route("/api/v1/users/:userId")
-    .put(authMiddlewareAPI, checkRoleApi(ADMIN_ROLE), userUpdateSchema, updateUser);
+    .put(
+        authMiddlewareAPI,
+        checkRoleApi(ADMIN_ROLE),
+        userUpdateSchema,
+        updateUser
+    );
 
 userRouter
     .route("/api/v1/users/:userId")
@@ -29,4 +50,8 @@ userRouter
 
 userRouter
     .route("/api/v1/users/:userId/active")
-    .put(authMiddlewareAPI, checkRoleApi(ADMIN_ROLE, HR_ROLE), toggleActiveUser);
+    .put(
+        authMiddlewareAPI,
+        checkRoleApi(ADMIN_ROLE, HR_ROLE),
+        toggleActiveUser
+    );

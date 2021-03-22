@@ -1,3 +1,3 @@
-import { roleConstant } from "./role";
+import { ROLE } from "./role";
 
-export { roleConstant };
+export { ROLE };

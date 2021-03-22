@@ -1,5 +1,5 @@
 import { prisma } from "../configs";
-
+import bcrypt from "bcryptjs";
 const getUsers = async (page) => {
     let users = [];
     const take = 6;
@@ -14,9 +14,26 @@ const getUsers = async (page) => {
     return users;
 };
 const createUser = async (user) => {
-    await prisma.user.create({
-        data: { name: user.name, age: user.age, address: user.address, active: true },
+    const isUser = await prisma.account.findUnique({
+        where: { userName: user.userName },
     });
+    if (isUser) return false;
+
+    const hashPasswor = await bcrypt.hash(user.password, 12);
+    const newAccount = await prisma.account.create({
+        data: { userName: user.userName, password: hashPasswor, role: 3 },
+    });
+
+    await prisma.user.create({
+        data: {
+            accoutId: newAccount.id,
+            name: user.name,
+            age: user.age,
+            address: user.address,
+            active: true,
+        },
+    });
+    return true;
 };
 const getUserById = async (id) => {
     const user = await prisma.user.findFirst({ where: { id } });

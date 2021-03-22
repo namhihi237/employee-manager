@@ -11,13 +11,18 @@ const login = async (req, res, next) => {
     try {
         const user = await prisma.account.findFirst({ where: { userName } });
         if (!user)
-            return res.render("auth/login.pug", { msg: "userName or password is incorrect" });
+            return res.render("auth/login.pug", {
+                msg: "userName or password is incorrect",
+            });
         const match = await bcrypt.compare(password, user.password);
         if (!match)
-            return res.render("auth/login.pug", { msg: "userName or password is incorrect" });
+            return res.render("auth/login.pug", {
+                msg: "userName or password is incorrect",
+            });
         let sess = req.session;
         sess.user = user;
-        res.redirect("/");
+        if (user.role != 3) return res.redirect("/");
+        return res.redirect("/chat");
     } catch (error) {
         res.render("auth/login.pug");
     }
@@ -41,7 +46,12 @@ const home = async (req, res, next) => {
         if (msg) {
             if (!page) {
                 users = await userService.getUsers(1);
-                return res.render("home/index.pug", { users, count, page: 1, msg });
+                return res.render("home/index.pug", {
+                    users,
+                    count,
+                    page: 1,
+                    msg,
+                });
             }
             users = await userService.getUsers(page);
             return res.render("home/index.pug", { users, msg, count, page });
@@ -64,12 +74,23 @@ const createUserGet = async (req, res, next) => {
 };
 
 const createUSerPost = async (req, res, next) => {
-    let { name, age, address } = req.body;
+    let { name, age, address, userName, password } = req.body;
     try {
         age = age - 0;
-        await userService.createUser({ name, age, address });
+        if (
+            !(await userService.createUser({
+                name,
+                age,
+                address,
+                userName,
+                password,
+            }))
+        ) {
+            return res.redirect("/create-user?msg=userName has exist");
+        }
         return res.redirect("/");
     } catch (error) {
+        console.log(error);
         res.redirect("/error");
     }
 };

@@ -1,3 +1,4 @@
+
 $("#menu-toggle").click(function (e) {
     e.preventDefault();
     $("#wrapper").toggleClass("toggled");
@@ -12,10 +13,11 @@ $(".open-button").click(() => {
     openForm();
 });
 
-var firebaseConfig = {
+let firebaseConfig = {
     apiKey: "AIzaSyB0fLrWp1yi9sfc4f6Q3eRBtIOhdH7pMls",
     authDomain: "user-manager-a43bc.firebaseapp.com",
-    databaseURL: "https://user-manager-a43bc-default-rtdb.europe-west1.firebasedatabase.app",
+    databaseURL:
+        "https://user-manager-a43bc-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "user-manager-a43bc",
     storageBucket: "user-manager-a43bc.appspot.com",
     messagingSenderId: "159042025405",
@@ -26,19 +28,21 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 let database = firebase.database();
 endScroll();
-function uuidv4() {
-    return Date.now();
-}
-function writeMess(userName) {
+
+function writeMess() {
     const input = document.getElementById("input-data");
-    let id = uuidv4();
-    database.ref("mess/" + id).set({
-        id,
-        content: input.value,
-        userName,
-    });
+    if (input.value == "") return;
+    const data = { content: input.value };
+    fetch("http://localhost/chat", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    }).then();
     input.value = "";
 }
+
 database.ref("mess/").on("value", (snapshot) => {
     const data = snapshot.val();
     const msg = document.getElementById("msg");
@@ -49,6 +53,7 @@ database.ref("mess/").on("value", (snapshot) => {
     }
     endScroll();
 });
+
 let send = document.getElementById("input-data");
 send.addEventListener("keydown", function (event) {
     // Number 13 is the "Enter" key on the keyboard

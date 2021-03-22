@@ -32,10 +32,8 @@ const getUser = async (req, res, next) => {
 };
 
 const createUser = async (req, res, next) => {
-    const { role } = req.user;
     const { name, age, address } = req.body;
     try {
-        if (role != 0) throw new HttpError("Deny permission", 401);
         await userService.createUser({ name, age, address });
         res.status(200).json({
             msg: "Success",
@@ -46,12 +44,10 @@ const createUser = async (req, res, next) => {
 };
 
 const updateUser = async (req, res, next) => {
-    const { role } = req.user;
     const { name, age, address } = req.body;
     const { userId } = req.params;
     try {
         let id = userId - 0;
-        if (role != 0) throw new HttpError("Deny permission", 401);
         const data = { name, age, address };
         if (!(await userService.updateUserById(id, data)))
             throw new HttpError("User does not exist", 404);
@@ -64,12 +60,11 @@ const updateUser = async (req, res, next) => {
 };
 
 const deleteUser = async (req, res, next) => {
-    const { role } = req.user;
     const { userId } = req.params;
     try {
         let id = userId - 0;
-        if (role != 0) throw new HttpError("Deny permission", 401);
-        if (!(await userService.deleteUser(id))) throw new HttpError("User does not exist", 404);
+        if (!(await userService.deleteUser(id)))
+            throw new HttpError("User does not exist", 404);
         res.status(200).json({
             msg: "Success",
         });
@@ -82,7 +77,8 @@ const toggleActiveUser = async (req, res, next) => {
     const { userId } = req.params;
     try {
         let id = userId - 0;
-        if (!(await userService.toggleActive(id))) throw new HttpError("User does not exist", 404);
+        if (!(await userService.toggleActive(id)))
+            throw new HttpError("User does not exist", 404);
         res.status(200).json({
             msg: "Success",
         });

@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { adminController } from "../../controllers/admin";
 import { validateSchema, authMiddleware, checkRole } from "../../middlewares";
-import { roleConstant } from "../../constant";
-const { ADMIN_ROLE, HR_ROLE } = roleConstant;
+import { ROLE } from "../../constant";
+const { ADMIN_ROLE, HR_ROLE, USER_ROLE } = ROLE;
 
 const {
     login,
@@ -27,23 +27,36 @@ adminRouter.route("/login").get(viewLogin);
 
 adminRouter.route("/login").post(login);
 
-adminRouter.route("/").get(authMiddleware, checkRole(ADMIN_ROLE, HR_ROLE), home);
+adminRouter
+    .route("/")
+    .get(authMiddleware, checkRole(ADMIN_ROLE, HR_ROLE), home);
 
 adminRouter.route("/logout").get(logout);
 
-adminRouter.route("/create-user").get(authMiddleware, checkRole(ADMIN_ROLE), createUserGet);
+adminRouter
+    .route("/create-user")
+    .get(authMiddleware, checkRole(ADMIN_ROLE), createUserGet);
 
 adminRouter
     .route("/create-user")
-    .post(authMiddleware, checkRole(ADMIN_ROLE), createUserSchema, createUSerPost);
+    .post(
+        authMiddleware,
+        checkRole(ADMIN_ROLE),
+        createUserSchema,
+        createUSerPost
+    );
 
-adminRouter.route("/delete-user/:userId").get(authMiddleware, checkRole(ADMIN_ROLE), deleteUser);
+adminRouter
+    .route("/delete-user/:userId")
+    .get(authMiddleware, checkRole(ADMIN_ROLE), deleteUser);
 
 adminRouter
     .route("/toggle/:userId")
     .get(authMiddleware, checkRole(ADMIN_ROLE, HR_ROLE), toggleActive);
 
-adminRouter.route("/edit-user/:userId").get(authMiddleware, checkRole(ADMIN_ROLE), editView);
+adminRouter
+    .route("/edit-user/:userId")
+    .get(authMiddleware, checkRole(ADMIN_ROLE), editView);
 
 adminRouter
     .route("/edit-user/:userId")
