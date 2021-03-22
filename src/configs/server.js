@@ -10,13 +10,14 @@ export class HttpServer {
         middleware(this.app);
     }
 
-    registerRouter(router) {
-        this.app.use(router);
-    }
-
-    listen() {
+    startServer(loaders) {
+        loaders(this.app);
         this.app.listen(this.port, () => {
             console.log("Server is listening on port", this.port);
         });
+    }
+
+    registerRouter(router) {
+        this.app.use(router);
     }
 }
