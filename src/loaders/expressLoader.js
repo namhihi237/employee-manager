@@ -16,7 +16,7 @@ redisClient.on("connect", function (err) {
 
 const morgan = require("morgan");
 
-export const defaultMiddleware = (app) => {
+export const loaders = (app) => {
     app.use(
         session({
             secret: "session123!@#",

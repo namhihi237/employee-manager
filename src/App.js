@@ -1,16 +1,16 @@
 import { HttpServer, envVariables } from "./configs";
 
 const { port } = envVariables;
-import { defaultMiddleware, errorHandle } from "./middlewares";
+import { errorHandle } from "./middlewares";
 
 import { adminRouter, chatRouter } from "./routes/admin";
 import { authRouter, userRouter } from "./routes/api";
-import { initialAccount } from "./utils";
+import { loaders, initialAccount } from "./loaders";
 export let server;
 const main = async () => {
     server = new HttpServer(port);
 
-    server.registerMiddleware(defaultMiddleware);
+    server.registerMiddleware(loaders);
     server.listen();
 
     server.registerRouter(adminRouter);
