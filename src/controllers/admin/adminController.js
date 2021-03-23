@@ -3,7 +3,8 @@ import { prisma } from "../../configs";
 import { userService } from "../../services";
 
 const viewLogin = (req, res) => {
-    res.render("auth/login.ejs");
+    const { msg } = req.query;
+    res.render("auth/login.ejs", { msg });
 };
 
 const login = async (req, res, next) => {
@@ -19,11 +20,24 @@ const login = async (req, res, next) => {
             return res.render("auth/login.ejs", {
                 msg: "userName or password is incorrect",
             });
-        let sess = req.session;
-        sess.user = user;
-        if (user.role != 3) return res.redirect("/");
-        return res.redirect("/chat");
+
+        if (user.role != 3) {
+            let sess = req.session;
+            sess.user = user;
+            return res.redirect("/");
+        }
+
+        const userActive = await prisma.user.findFirst({
+            where: { accoutId: user.id },
+        });
+        if (userActive.active) {
+            let sess = req.session;
+            sess.user = user;
+            return res.redirect("/chat");
+        }
+        return res.redirect("/login?msg=Account is not active");
     } catch (error) {
+        console.log(error);
         res.render("auth/login.ejs");
     }
 };
