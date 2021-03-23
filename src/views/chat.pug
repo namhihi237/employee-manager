@@ -1,7 +1,7 @@
 head
   meta(charset='utf-8')
   meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
-  title Home Admin
+  title User
   link(href='/css/simple-sidebar.css', rel='stylesheet')
   link(href='/css/chat.css', rel='stylesheet')
   link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T', crossorigin='anonymous')
@@ -29,8 +29,11 @@ head
           label(for='msg')
             b Message
           textarea#msg.msg(name='msg', readonly='readonly')
-          input#input-data.input(placeholder='Type message..', name='content', required='' autocomplete="off")
-          button#send-btn.btn(type='button' onclick = 'writeMess()') Send
+          .container-message
+            .btn-send
+              input#input-data.input(placeholder='Type message..', name='input', required='', autocomplete='off')
+            #send-btn.icon-send.btn(type='button', onclick='writeMess()')
+              i.fas.fa-paper-plane.fa-2x
           button.btn.cancel(type='button', onclick='closeForm()') Close
   
     block content

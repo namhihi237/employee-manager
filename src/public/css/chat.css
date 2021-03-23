@@ -50,13 +50,13 @@ body {
 }
 
 .form-container .input {
-    width: 100%;
     padding: 5px;
     margin: 5px 0 15px 0;
     border: none;
     background: #f1f1f1;
     resize: none;
     height: 50px;
+    flex: 8;
 }
 
 /* When the textarea gets focus, do something */
@@ -89,4 +89,25 @@ body {
 }
 .input {
     height: 100px;
+}
+.container-message {
+    flex-direction: row;
+    display: flex;
+    justify-content: space-between;
+}
+.icon-send {
+    flex: 2;
+    height: 50px;
+    margin-top: 5px;
+}
+
+.icon-send i {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.btn-send {
+    flex: 8;
 }

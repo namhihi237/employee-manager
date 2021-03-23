@@ -39,8 +39,11 @@ head
           label(for='msg')
             b Message
           textarea#msg.msg(name='msg', readonly='readonly')
-          input#input-data.input(placeholder='Type message..', name='input', required='' autocomplete="off")
-          button#send-btn.btn(type='button' onclick=`writeMess()`) Send
+          .container-message
+            .btn-send
+              input#input-data.input(placeholder='Type message..', name='input', required='', autocomplete='off')
+            #send-btn.icon-send.btn(type='button', onclick='writeMess()')
+              i.fas.fa-paper-plane.fa-2x
           button.btn.cancel(type='button', onclick='closeForm()') Close
   
     block content
