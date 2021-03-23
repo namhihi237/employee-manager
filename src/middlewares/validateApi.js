@@ -3,8 +3,8 @@ import { validateRequest } from "../utils";
 
 const adminRegisterSchema = (req, res, next) => {
     const schema = Joi.object({
-        userName: Joi.string().alphanum().required().min(3).max(50),
-        password: Joi.string().required(),
+        userName: Joi.string().alphanum().required().min(3).max(255),
+        password: Joi.string().required().min(6).max(255),
         key: Joi.string(),
         role: Joi.number().valid(0, 1),
     });
@@ -13,26 +13,28 @@ const adminRegisterSchema = (req, res, next) => {
 
 const adminLoginSchema = (req, res, next) => {
     const schema = Joi.object({
-        userName: Joi.string().alphanum().required().min(3).max(50),
-        password: Joi.string().required(),
+        userName: Joi.string().alphanum().required().min(3).max(255),
+        password: Joi.string().required().min(6).max(255),
     });
     validateRequest(req, next, schema);
 };
 
 const userCreateSchema = (req, res, next) => {
     const schema = Joi.object({
-        name: Joi.string().required(),
-        age: Joi.number().required().min(1),
-        address: Joi.string().required(),
+        userName: Joi.string().alphanum().required().min(3).max(255),
+        password: Joi.string().required().min(6).max(255),
+        name: Joi.string().required().max(255),
+        age: Joi.number().required(),
+        address: Joi.string().required().max(255),
     });
     validateRequest(req, next, schema);
 };
 
 const userUpdateSchema = (req, res, next) => {
     const schema = Joi.object({
-        name: Joi.string(),
-        age: Joi.number().min(1),
-        address: Joi.string(),
+        name: Joi.string().required().max(255),
+        age: Joi.number().required(),
+        address: Joi.string().required().max(255),
     });
     validateRequest(req, next, schema);
 };

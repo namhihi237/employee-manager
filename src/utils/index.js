@@ -1,5 +1,11 @@
 import { HttpError } from "./httpError";
-import { validateRequest } from "./handleValidate";
+import { validateRequest, validateRequestAdmin } from "./handleValidate";
 import { panigation } from "./panigation";
 import { HttpServer } from "./server";
-export { HttpError, validateRequest, panigation, HttpServer };
+export {
+    HttpError,
+    validateRequest,
+    validateRequestAdmin,
+    panigation,
+    HttpServer,
+};

@@ -1,32 +1,23 @@
 import Joi from "joi";
-import { validateRequest } from "../utils";
+import { validateRequestAdmin } from "../utils";
 
 const createUserSchema = (req, res, next) => {
-    const { name, age, address } = req.body;
-    if (req.user.role != 0) {
-        return res.redirect(`/?msg="Deny permission`);
-    }
-    if (!name || !age || !address) {
-        return res.redirect(`/create-user/?msg="Data is empty`);
-    }
-    if (isNaN(age)) {
-        return res.redirect(`/create-user/?msg="Age must be number`);
-    }
-    next();
+    const schema = Joi.object({
+        userName: Joi.string().alphanum().required().min(3).max(255),
+        password: Joi.string().required().min(6).max(255),
+        name: Joi.string().required().max(255),
+        age: Joi.number().required(),
+        address: Joi.string().required().max(255),
+    });
+    validateRequestAdmin(req, res, next, schema);
 };
 
 const editUserSchema = (req, res, next) => {
-    const { name, age, address } = req.body;
-    const { userId } = req.params;
-    if (req.user.role != 0) {
-        return res.redirect(`/?msg="Deny permission`);
-    }
-    if (!name || !age || !address) {
-        return res.redirect(`/edit-user/${userId}?msg="Data is empty`);
-    }
-    if (isNaN(age)) {
-        return res.redirect(`/edit-user/${userId}?msg="Age must be number`);
-    }
-    next();
+    const schema = Joi.object({
+        name: Joi.string().required().max(255),
+        age: Joi.number().required(),
+        address: Joi.string().required().max(255),
+    });
+    validateRequestAdmin(req, res, next, schema);
 };
 export const validateSchema = { createUserSchema, editUserSchema };
