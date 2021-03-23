@@ -84,7 +84,7 @@ const createUserGet = async (req, res, next) => {
 };
 
 const createUSerPost = async (req, res, next) => {
-    let { name, age, address, userName, password } = req.body;
+    let { name, age, address, userName, password, email } = req.body;
     try {
         age = age - 0;
         if (
@@ -94,9 +94,10 @@ const createUSerPost = async (req, res, next) => {
                 address,
                 userName,
                 password,
+                email,
             }))
         ) {
-            return res.redirect("/create-user?msg=userName has exist");
+            return res.redirect("/create-user?msg=userName or email has exist");
         }
         return res.redirect("/");
     } catch (error) {
@@ -169,6 +170,20 @@ const saveEdit = async (req, res, next) => {
 const errorPage = async (req, res, next) => {
     res.render("error.ejs");
 };
+
+const verifyEmail = async (req, res, next) => {
+    const { token } = req.params;
+    try {
+        if (!(await userService.verifyAccout(token))) {
+            return res.redirect("/error");
+        }
+        res.redirect("/login");
+    } catch (error) {
+        console.log(error);
+        res.redirect("/error");
+    }
+};
+
 export const adminController = {
     login,
     viewLogin,
@@ -181,4 +196,5 @@ export const adminController = {
     editView,
     saveEdit,
     errorPage,
+    verifyEmail,
 };

@@ -1,0 +1,39 @@
+<div class="chat">
+    <div class="btn-open open-button">
+        <i class="fas fa-comments fa-stack-2x icon"></i>
+    </div>
+    <div class="chat-popup" id="myForm">
+        <form class="form-container" action="/chat" method="post">
+            <label for="msg"><b>Message</b></label
+            ><textarea
+                class="msg"
+                id="msg"
+                name="msg"
+                readonly="readonly"
+            ></textarea>
+            <div class="container-message">
+                <div class="btn-send">
+                    <input
+                        class="input"
+                        id="input-data"
+                        placeholder="Type message.."
+                        name="input"
+                        required=""
+                        autocomplete="off"
+                    />
+                </div>
+                <div
+                    class="icon-send btn"
+                    id="send-btn"
+                    type="button"
+                    onclick="writeMess()"
+                >
+                    <i class="fas fa-paper-plane fa-2x"></i>
+                </div>
+            </div>
+            <button class="btn cancel" type="button" onclick="closeForm()">
+                Close
+            </button>
+        </form>
+    </div>
+</div>

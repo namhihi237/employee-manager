@@ -1,83 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link href="/css/simple-sidebar.css" rel="stylesheet" />
-        <link href="/css/chat.css" rel="stylesheet" />
-        <link
-            rel="stylesheet"
-            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-            crossorigin="anonymous"
-        />
-        <script
-            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"
-        ></script>
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-            crossorigin="anonymous"
-        ></script>
-        <script
-            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"
-        ></script>
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-        />
+        <%- include('../template'); -%>
         <title>Home Admin</title>
     </head>
     <body>
         <div class="d-flex" id="wrapper">
-            <div class="bg-light border-right" id="sidebar-wrapper">
-                <div class="sidebar-heading" style="color: red">
-                    <a href="/">Management</a>
-                </div>
-                <div class="list-group list-group-flush">
-                    <a
-                        class="list-group-item list-group-item-action bg-light"
-                        href="#"
-                        >User</a
-                    >
-                </div>
-            </div>
+            <%- include('../common/tabbar'); -%>
             <div id="page-content-wrapper">
-                <nav
-                    class="navbar navbar-expand-lg navbar-light bg-light border-bottom"
-                >
-                    <button class="btn btn-primary" id="menu-toggle">...</button
-                    ><button
-                        class="navbar-toggler"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation"
-                    >
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div
-                        class="collapse navbar-collapse"
-                        id="navbarSupportedContent"
-                    >
-                        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                            <li class="nav-item active">
-                                <a
-                                    class="nav-link btn btn-warning"
-                                    href="/logout"
-                                    >Logout</a
-                                >
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
+                <%- include('../common/navbar'); -%>
                 <!-- table -->
                 <div>
                     <a href="/create-user"
@@ -95,6 +26,7 @@
                             <tr>
                                 <th scope="col">ID</th>
                                 <th scope="col">Name</th>
+                                <th scope="col">Email</th>
                                 <th scope="col">Age</th>
                                 <th scope="col">Address</th>
                                 <th scope="col">status</th>
@@ -106,6 +38,7 @@
                             <tr>
                                 <td><%= user.id %></td>
                                 <td><%= user.name %></td>
+                                <td><%= user.email %></td>
                                 <td><%= user.age %></td>
                                 <td><%= user.address %></td>
                                 <td>
@@ -161,49 +94,7 @@
                         </div>
                     <% } %>
                 </div>
-                <div class="chat">
-                    <div class="btn-open open-button">
-                        <i class="fas fa-comments fa-stack-2x icon"></i>
-                    </div>
-                    <div class="chat-popup" id="myForm">
-                        <form class="form-container" action="#">
-                            <label for="msg"><b>Message</b></label
-                            ><textarea
-                                class="msg"
-                                id="msg"
-                                name="msg"
-                                readonly="readonly"
-                            ></textarea>
-                            <div class="container-message">
-                                <div class="btn-send">
-                                    <input
-                                        class="input"
-                                        id="input-data"
-                                        placeholder="Type message.."
-                                        name="input"
-                                        required=""
-                                        autocomplete="off"
-                                    />
-                                </div>
-                                <div
-                                    class="icon-send btn"
-                                    id="send-btn"
-                                    type="button"
-                                    onclick="writeMess()"
-                                >
-                                    <i class="fas fa-paper-plane fa-2x"></i>
-                                </div>
-                            </div>
-                            <button
-                                class="btn cancel"
-                                type="button"
-                                onclick="closeForm()"
-                            >
-                                Close
-                            </button>
-                        </form>
-                    </div>
-                </div>
+                <%- include('../common/message'); -%>
             </div>
         </div>
         <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase.js"></script>

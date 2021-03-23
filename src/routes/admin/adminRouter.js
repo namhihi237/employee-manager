@@ -4,38 +4,27 @@ import { validateSchema, authMiddleware, checkRole } from "../../middlewares";
 import { ROLE } from "../../constant";
 const { ADMIN_ROLE, HR_ROLE, USER_ROLE } = ROLE;
 
-const {
-    login,
-    viewLogin,
-    home,
-    logout,
-    createUSerPost,
-    createUserGet,
-    deleteUser,
-    toggleActive,
-    editView,
-    saveEdit,
-    errorPage,
-} = adminController;
 const { createUserSchema, editUserSchema } = validateSchema;
 
 export const adminRouter = Router();
 
-adminRouter.route("/error").get(errorPage);
+adminRouter.route("/error").get(adminController.errorPage);
 
-adminRouter.route("/login").get(viewLogin);
+adminRouter.route("/login").get(adminController.viewLogin);
 
-adminRouter.route("/login").post(login);
+adminRouter.route("/login").post(adminController.login);
+
+adminRouter.route("/verify/:token").get(adminController.verifyEmail);
 
 adminRouter
     .route("/")
-    .get(authMiddleware, checkRole(ADMIN_ROLE, HR_ROLE), home);
+    .get(authMiddleware, checkRole(ADMIN_ROLE, HR_ROLE), adminController.home);
 
-adminRouter.route("/logout").get(logout);
+adminRouter.route("/logout").get(adminController.logout);
 
 adminRouter
     .route("/create-user")
-    .get(authMiddleware, checkRole(ADMIN_ROLE), createUserGet);
+    .get(authMiddleware, checkRole(ADMIN_ROLE), adminController.createUserGet);
 
 adminRouter
     .route("/create-user")
@@ -43,21 +32,30 @@ adminRouter
         authMiddleware,
         checkRole(ADMIN_ROLE),
         createUserSchema,
-        createUSerPost
+        adminController.createUSerPost
     );
 
 adminRouter
     .route("/delete-user/:userId")
-    .get(authMiddleware, checkRole(ADMIN_ROLE), deleteUser);
+    .get(authMiddleware, checkRole(ADMIN_ROLE), adminController.deleteUser);
 
 adminRouter
     .route("/toggle/:userId")
-    .get(authMiddleware, checkRole(ADMIN_ROLE, HR_ROLE), toggleActive);
+    .get(
+        authMiddleware,
+        checkRole(ADMIN_ROLE, HR_ROLE),
+        adminController.toggleActive
+    );
 
 adminRouter
     .route("/edit-user/:userId")
-    .get(authMiddleware, checkRole(ADMIN_ROLE), editView);
+    .get(authMiddleware, checkRole(ADMIN_ROLE), adminController.editView);
 
 adminRouter
     .route("/edit-user/:userId")
-    .post(authMiddleware, checkRole(ADMIN_ROLE), editUserSchema, saveEdit);
+    .post(
+        authMiddleware,
+        checkRole(ADMIN_ROLE),
+        editUserSchema,
+        adminController.saveEdit
+    );

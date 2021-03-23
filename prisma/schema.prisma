@@ -19,6 +19,7 @@ model User {
   id       Int      @id @default(autoincrement())
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
+  email    String   @unique
   name     String   @db.VarChar(255)
   age      Int
   address  String   @db.VarChar(255)

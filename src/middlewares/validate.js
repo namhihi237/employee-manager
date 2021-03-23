@@ -4,6 +4,7 @@ import { validateRequestAdmin } from "../utils";
 const createUserSchema = (req, res, next) => {
     const schema = Joi.object({
         userName: Joi.string().alphanum().required().min(3).max(255),
+        email: Joi.string().email(),
         password: Joi.string().required().min(6).max(255),
         name: Joi.string().required().max(255),
         age: Joi.number().required(),
