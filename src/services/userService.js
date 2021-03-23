@@ -24,7 +24,7 @@ const createUser = async (user) => {
             name: user.name,
             age: user.age,
             address: user.address,
-            active: true,
+            active: false,
         },
     });
     return true;

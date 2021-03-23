@@ -3,7 +3,7 @@ import { prisma } from "../../configs";
 import { userService } from "../../services";
 
 const viewLogin = (req, res) => {
-    res.render("auth/login.pug");
+    res.render("auth/login.ejs");
 };
 
 const login = async (req, res, next) => {
@@ -11,12 +11,12 @@ const login = async (req, res, next) => {
     try {
         const user = await prisma.account.findFirst({ where: { userName } });
         if (!user)
-            return res.render("auth/login.pug", {
+            return res.render("auth/login.ejs", {
                 msg: "userName or password is incorrect",
             });
         const match = await bcrypt.compare(password, user.password);
         if (!match)
-            return res.render("auth/login.pug", {
+            return res.render("auth/login.ejs", {
                 msg: "userName or password is incorrect",
             });
         let sess = req.session;
@@ -24,7 +24,7 @@ const login = async (req, res, next) => {
         if (user.role != 3) return res.redirect("/");
         return res.redirect("/chat");
     } catch (error) {
-        res.render("auth/login.pug");
+        res.render("auth/login.ejs");
     }
 };
 
@@ -46,7 +46,7 @@ const home = async (req, res, next) => {
         if (msg) {
             if (!page) {
                 users = await userService.getUsers(1);
-                return res.render("home/index.pug", {
+                return res.render("home/index.ejs", {
                     users,
                     count,
                     page: 1,
@@ -54,14 +54,24 @@ const home = async (req, res, next) => {
                 });
             }
             users = await userService.getUsers(page);
-            return res.render("home/index.pug", { users, msg, count, page });
+            return res.render("home/index.ejs", { users, msg, count, page });
         }
 
         users = await userService.getUsers(page);
         if (page && page > 0) {
-            return res.render("home/index.pug", { users, count, page });
+            return res.render("home/index.ejs", {
+                users,
+                count,
+                page,
+                msg: null,
+            });
         }
-        return res.render("home/index.pug", { users, count, page: 1 });
+        return res.render("home/index.ejs", {
+            users,
+            count,
+            page: 1,
+            msg: null,
+        });
     } catch (error) {
         console.log(error);
         res.redirect("/error");
@@ -70,7 +80,7 @@ const home = async (req, res, next) => {
 
 const createUserGet = async (req, res, next) => {
     const { msg } = req.query;
-    res.render("home/create.pug", { msg });
+    res.render("home/create.ejs", { msg });
 };
 
 const createUSerPost = async (req, res, next) => {
@@ -133,9 +143,9 @@ const editView = async (req, res, next) => {
             return res.redirect(`/?msg="User does not exist`);
         }
         if (msg) {
-            return res.render("home/edit.pug", { user, msg });
+            return res.render("home/edit.ejs", { user, msg });
         }
-        res.render("home/edit.pug", { user });
+        res.render("home/edit.ejs", { user, msg: null });
     } catch (error) {
         res.redirect("/error");
     }
@@ -157,7 +167,7 @@ const saveEdit = async (req, res, next) => {
     }
 };
 const errorPage = async (req, res, next) => {
-    res.render("error.pug");
+    res.render("error.ejs");
 };
 export const adminController = {
     login,

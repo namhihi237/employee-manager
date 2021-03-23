@@ -31,6 +31,7 @@ export const loaders = (app) => {
     );
     app.set("views", path.join("src/views"));
     app.set("view engine", "pug");
+    app.set("view engine", "ejs");
     app.use(
         express.urlencoded({
             extended: true,

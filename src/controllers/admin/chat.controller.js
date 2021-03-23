@@ -10,7 +10,7 @@ admin.initializeApp({
 const database = admin.database();
 
 const viewChat = (req, res) => {
-    res.render("chat.pug");
+    res.render("chat.ejs");
 };
 
 const createMessage = (req, res) => {
